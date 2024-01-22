@@ -1,4 +1,5 @@
 from datetime import datetime
+import pytz
 from django.test import TestCase
 from django.http import HttpRequest
 from django.urls import resolve
@@ -14,11 +15,12 @@ class ArticlePageTest(TestCase):
             full_text='full_text 1',
             summary='summury 1',
             category='category 1',
-            pubdate=datetime.now(),
+            pubdate=datetime.utcnow().replace(tzinfo=pytz.utc),
+            slug='slug',
         )
 
         request = HttpRequest()
-        response = article_page(request, 1)
+        response = article_page(request, 'slug')
         html = response.content.decode('utf8')
 
         self.assertIn('title 1', html)
@@ -36,7 +38,7 @@ class HomePageTest(TestCase):
             full_text='full_text 1',
             summary='summury 1',
             category='category 1',
-            pubdate=datetime.now(),
+            pubdate=datetime.utcnow().replace(tzinfo=pytz.utc),
             slug='slug-1',
         )
         Article.objects.create(
@@ -44,7 +46,7 @@ class HomePageTest(TestCase):
             full_text='full_text 2',
             summary='summury 2',
             category='category 2',
-            pubdate=datetime.now(),
+            pubdate=datetime.utcnow().replace(tzinfo=pytz.utc),
             slug='slug-2',
         )
 
@@ -55,12 +57,12 @@ class HomePageTest(TestCase):
         self.assertIn('title 1', html)
         self.assertIn('summury 1', html)        
         self.assertNotIn('full_text 1', html)
-        self.assertIn('blog/title-1', html)  
+        self.assertIn('blog/slug-1', html)  
 
         self.assertIn('title 2', html)
         self.assertIn('summury 2', html)        
         self.assertNotIn('full_text 2', html)
-        self.assertIn('blog/title-2', html)  
+        self.assertIn('blog/slug-2', html)  
     
     def test_root_url_resolves_to_home_page_view(self):
         found = resolve('/')
@@ -83,7 +85,7 @@ class ArticleModelTest(TestCase):
             full_text='full_text 1',
             summary='summury 1',
             category='category 1',
-            pubdate=datetime.now(),
+            pubdate=datetime.utcnow().replace(tzinfo=pytz.utc),
             slug='slug-1',
         )
         article1.save()
@@ -93,7 +95,7 @@ class ArticleModelTest(TestCase):
             full_text='full_text 2',
             summary='summury 2',
             category='category 2',
-            pubdate=datetime.now(),
+            pubdate=datetime.utcnow().replace(tzinfo=pytz.utc),
             slug='slug-2',
         )
         article2.save()

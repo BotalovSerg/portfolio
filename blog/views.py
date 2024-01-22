@@ -11,8 +11,8 @@ def home_page(request):
     return render(request, 'blog/home_page.html', context)
 
 
-def article_page(request, article_id):
-    article = Article.objects.get(pk=article_id)
+def article_page(request, slug):
+    article = Article.objects.get(slug=slug)
     context = {
         'article': article,
     }

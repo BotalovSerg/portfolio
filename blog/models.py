@@ -8,3 +8,6 @@ class Article(models.Model):
     pubdate = models.DateTimeField()
     slug = models.CharField(max_length=100, unique=True)
     # is_published #TODO
+
+    def __str__(self) -> str:
+        return self.title
