@@ -1,10 +1,11 @@
-<html>
-    <title>Сайт Сергея Боталова</title>
-    <h1>Serg Botalov</h1>
+{% extends 'blog/base.html' %}
 
+{% block head %}Сайт Сергея Боталова{% endblock %}
+
+{% block content %}
         <div class="article">
             <h2 class="article_title">{{article.title}}</h2>
             <p class="article_text">{{article.full_text}}</p>
         </div>
 
-</html>
+{% endblock %}

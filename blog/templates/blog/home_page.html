@@ -1,15 +1,30 @@
-<html>
-    <title>Сайт Сергея Боталова</title>
-    <h1>Serg Botalov</h1>
+{% extends 'blog/base.html' %}
 
-    <div class="article-list">
-        {% for article in articles %}
-            <div class="article">
-                <h2 class="article_title">
-                    <a href="/blog/{{article.slug}}">{{article.title}}</a>
-                </h2>
-                <p class="article_summary">{{article.summary}}</p>
-            </div>
-        {% endfor %}
+{% block title %}Сайт Сергея Боталова{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Serg Botalov</h1>
+        </div>
     </div>
-</html>
+
+    <div class="row">
+        <div class="col-md-8 col-sm-12">
+            <div class="article-list">
+                {% for article in articles %}
+                    <div class="article">
+                        <h2 class="article_title">
+                            <a href="{{ article.get_absolute_url }}">{{article.title}}</a>
+                        </h2>
+                        <p class="article_summary">{{article.summary}}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}
