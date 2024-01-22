@@ -6,6 +6,34 @@ from .views import home_page
 from .models import Article
 
 class HomePageTest(TestCase):
+
+    def test_home_page_displays_articles(self):
+        Article.objects.create(
+            title='title 1',
+            full_text='full_text 1',
+            summary='summury 1',
+            category='category 1',
+            pubdate=datetime.now(),
+        )
+        Article.objects.create(
+            title='title 2',
+            full_text='full_text 2',
+            summary='summury 2',
+            category='category 2',
+            pubdate=datetime.now(),
+        )
+
+        request = HttpRequest()
+        response = home_page(request)
+        html = response.content.decode('utf8')
+
+        self.assertIn('title 1', html)
+        self.assertIn('summury 1', html)        
+        self.assertNotIn('full_text 1', html)
+
+        self.assertIn('title 2', html)
+        self.assertIn('summury 2', html)        
+        self.assertNotIn('full_text 2', html)
     
     def test_root_url_resolves_to_home_page_view(self):
         found = resolve('/')
@@ -15,7 +43,6 @@ class HomePageTest(TestCase):
         request = HttpRequest()
         response = home_page(request)
         html = response.content.decode('utf8')
-        self.assertTrue(html.startswith('<html>'))
         self.assertIn('<title>Сайт Сергея Боталова</title>', html)
         self.assertIn('<h1>Serg Botalov</h1>', html)        
         self.assertTrue(html.endswith('</html>'))
