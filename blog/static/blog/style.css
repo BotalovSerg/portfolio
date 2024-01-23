@@ -20,15 +20,51 @@ body {
 }
 
 .page-header {
-  border: 1px solid red;
   height: 8em;
+  margin-left: -30px;
 }
 
 h1, h2, h3 {
   font-family: graphik-black, Arial, Helvetica, sans-serif;
 }
 
+h2 {
+  font-size: 1.3em;
+}
+
+h3 {
+  font-size: 1.3em;
+}
+
+h4, h5, h6 {
+  font-size: 1em;
+}
+
 h1.avatar-top {
   font-size: 1em;
   margin-top: 2em;
+}
+
+h1.avatar-top img {
+  width: 50px;
+  margin-right: .2em;
+  clip-path: circle(20px at center);
+  margin-top: -1px;
+}
+
+.article {
+  margin-bottom: 2em;
+}
+
+h2.article_title {
+  margin-bottom: 0;
+}
+
+h2.article_title a {
+  text-decoration: none;
+  color: #333;
+}
+
+h2.article_title a:hover {
+  color: #555;
 }

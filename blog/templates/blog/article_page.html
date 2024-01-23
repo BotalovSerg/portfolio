@@ -1,11 +1,10 @@
 {% extends 'blog/base.html' %}
-
-{% block head %}Сайт Сергея Боталова{% endblock %}
+{% load static %}
+{% block title %}Сайт Сергея Боталова{% endblock %}
 
 {% block content %}
-        <div class="article">
-            <h2 class="article_title">{{article.title}}</h2>
-            <p class="article_text">{{article.full_text}}</p>
-        </div>
-
+<div class="article">
+    <h2 class="article_title">{{article.title}}</h2>
+    <p class="article_text">{{article.full_text}}</p>
+</div>
 {% endblock %}
