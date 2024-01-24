@@ -17,6 +17,7 @@ body {
   color: #333;
   font-size: 18px;
   font-family: graphik-regular, Arial, Helvetica, sans-serif;
+  margin-bottom: 60px;
 }
 
 .page-header {
@@ -73,4 +74,29 @@ h2.article_title a {
 
 h2.article_title a:hover {
   color: #555;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  line-height: 60px;
+  background-color: #fff;
+  font-family: graphik-regular, Arial, Helvetica, sans-serif;
+  font-size: .8em;
+  font-weight: 600;
+  color: #ccc;
+}
+
+
+@media only screen and (max-width: 960px){
+  table {
+    width: 100%;
+  }
 }

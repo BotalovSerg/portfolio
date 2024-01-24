@@ -5,10 +5,16 @@ from selenium.webdriver.common.by import By
 from django.test import LiveServerTestCase
 from blog.models import Article
 import unittest
+import os
+
 
 class BasicInstallTest(LiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Chrome()
+        staging_server = os.environ.get('STAGING_SERVER')
+        if staging_server:
+            self.live_server_url = 'http://' + staging_server
+
         Article.objects.create(
             title='title 1',
             full_text='full_text 1',
@@ -28,7 +34,7 @@ class BasicInstallTest(LiveServerTestCase):
     def test_home_pahe_header(self):
         self.browser.get(self.live_server_url)
         header = self.browser.find_element(By.TAG_NAME, 'h1')
-        self.assertIn('Serg Botalov', header.text)
+        self.assertIn('Sergey Botalov', header.text)
 
     def test_layout_and_styling(self):
         self.browser.get(self.live_server_url)

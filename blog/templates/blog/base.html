@@ -14,12 +14,17 @@
             <div class="col">
                 <h1 class="avatar-top">
                     <img src="{% static 'image/avatar.png' %}">
-                    <span class="author-name">Serg Botalov</span>
+                    <span class="author-name">Sergey Botalov</span>
                 </h1>            
             </div>
         </div>
         {% block content %}
         {% endblock %}
     </div>
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted">© Sergey Botalov 2020–{% now "Y" %}</span>
+        </div>
+    </footer>
 </body>
 </html>
