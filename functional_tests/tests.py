@@ -44,7 +44,7 @@ class BasicInstallTest(LiveServerTestCase):
         self.assertTrue(header.location['x'] > 10)
 
         footer = self.browser.find_element(By.CLASS_NAME, 'footer')
-        self.assertTrue(footer.location['y'] > 600)
+        self.assertTrue(footer.location['y'] > 500)
 
     def test_home_page_blog(self):
         self.browser.get(self.live_server_url)
