@@ -1,0 +1,14 @@
+[Unit]
+Description=Gunicorn for {{ project_name }}
+
+[Service]
+Restart=on-failure
+User=vagrant
+WorkingDirectory=/home/vagrant/sites/{{ project_name }}
+EnvironmentFile=/home/vagrant/sites/{{ project_name }}/.env
+
+ExecStart=/home/vagrant/sites/{{ project_name }}/venv/bin/gunicorn \
+    --bind unix:/tmp/{{ project_name }}.socket simplysite.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

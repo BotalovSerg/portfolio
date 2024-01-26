@@ -1,0 +1,106 @@
+---
+
+- hosts: all
+  vars:
+    project_name: "mysite.io"
+  
+  tasks:
+    - name: Install apt packages 
+      become: true      
+      apt:
+        pkg:
+          - nginx
+          - git
+          - python3
+          - python3-venv
+          - python3-pip
+        state: present
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Create a directory for the site
+      become: true
+      file:
+        path: "/home/vagrant/sites/{{ project_name }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0755'
+
+    - name: Download code from git
+      become_user: "{{ ansible_user }}"
+      git:
+        repo: https://github.com/BotalovSerg/portfolio.git
+        dest: "/home/vagrant/sites/{{ project_name }}"
+
+    - name: Istall dependencies
+      pip:
+        requirements: "/home/vagrant/sites/{{ project_name }}/requirements.txt"
+        virtualenv: "/home/vagrant/sites/{{ project_name }}/venv"
+        virtualenv_command: /usr/bin/python3 -m venv
+
+    - name: Run migrations
+      community.general.django_manage:
+        command: migrate
+        project_path: "/home/vagrant/sites/{{ project_name }}"
+        virtualenv: "/home/vagrant/sites/{{ project_name }}/venv"
+
+    - name: Add nginx config to sites-available
+      become: true
+      template: 
+        src: ./nginx.conf.j2
+        dest: /etc/nginx/sites-available/{{ project_name }}
+      notify:
+        - Restart nginx
+
+    - name: Add symlink in nginx sites-enabled
+      become: true
+      file:
+        src: /etc/nginx/sites-available/{{ project_name }}
+        dest: /etc/nginx/sites-enabled/{{ project_name }}
+        state: link
+      notify:
+        - Restart nginx
+
+    - name: Write gunicorn service script
+      become: true
+      template: 
+        src: ./gunicorn.j2
+        dest: /etc/systemd/system/gunicorn-{{ project_name }}.service
+      notify:
+        - Restart gunicorn
+
+    - name: Collect Static Files
+      community.general.django_manage:
+        command: collectstatic --noinput
+        project_path: "/home/vagrant/sites/{{ project_name }}"
+        virtualenv: "/home/vagrant/sites/{{ project_name }}/venv"
+
+    - name: Create .env file
+      template: 
+        src: ./dotenv.j2
+        dest: "/home/vagrant/sites/{{ project_name }}/.env"
+
+    - name: Add environment variables to .env
+      blockinfile:
+        path: "/home/vagrant/sites/{{ project_name }}/.env"
+        block: |
+          DJANGO_SECRET_KEY="{{ lookup('password', '/dev/null') }}"
+
+  handlers:   
+    - name: Restart nginx
+      service: 
+        name: nginx 
+        state: restarted
+      become: true
+      become_method: sudo
+
+
+    - name: Restart gunicorn
+      systemd:
+        name: gunicorn-{{ project_name }}
+        daemon_reload: yes
+        enabled: yes
+        state: restarted
+      become: true
+      become_method: sudo
