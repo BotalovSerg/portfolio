@@ -54,9 +54,9 @@ class BasicInstallTest(LiveServerTestCase):
     def test_home_page_articles_look_correct(self):
         self.browser.get(self.live_server_url)
         article_title = self.browser.find_element(By.CLASS_NAME, 'article_title')
-        article_summary = self.browser.find_element(By.CLASS_NAME, 'article_summary')
+        article_text = self.browser.find_element(By.CLASS_NAME, 'article_text')
         self.assertTrue(article_title)
-        self.assertTrue(article_summary)
+        self.assertTrue(article_text)
 
     def test_home_page_article_title_link_leads_to_page(self):
         self.browser.get(self.live_server_url)

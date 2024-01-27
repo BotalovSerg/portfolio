@@ -56,13 +56,13 @@ class HomePageTest(TestCase):
         html = response.content.decode('utf8')
 
         self.assertIn('title 1', html)
-        self.assertIn('summury 1', html)        
-        self.assertNotIn('full_text 1', html)
+        self.assertIn('full_text 1', html)        
+        self.assertNotIn('summury 1', html)
         self.assertIn('blog/slug-1', html)  
 
         self.assertIn('title 2', html)
-        self.assertIn('summury 2', html)        
-        self.assertNotIn('full_text 2', html)
+        self.assertIn('full_text 2', html)        
+        self.assertNotIn('summury 2', html)
         self.assertIn('blog/slug-2', html)  
 
     def test_home_page_returns_correct_html(self):
